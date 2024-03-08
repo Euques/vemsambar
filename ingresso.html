@@ -19,6 +19,7 @@
         <select class="form-control" id="chaveSelecao" onchange="carregarDados()">
           <!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
         </select>
+        <input type="text" class="form-control mt-2" id="novaChave" placeholder="Digite uma nova chave">
       </div>
 
       <div class="form-group">
@@ -104,8 +105,9 @@
 
     function carregarDados() {
       const chaveSelecao = document.getElementById('chaveSelecao');
+      const novaChaveInput = document.getElementById('novaChave');
       const chaveInput = document.getElementById('chave');
-      const chave = chaveSelecao.value;
+      const chave = chaveSelecao.value || novaChaveInput.value;
 
       if (chave) {
         promoRef.child(chave).once('value')
@@ -129,6 +131,7 @@
           });
       } else {
         // Limpar os campos para criar uma nova chave
+        novaChaveInput.value = '';
         chaveInput.value = '';
         document.getElementById('ativo').checked = false;
         document.getElementById('atracao').value = '';
@@ -142,8 +145,9 @@
 
     function salvarDados() {
       const chaveSelecao = document.getElementById('chaveSelecao');
+      const novaChaveInput = document.getElementById('novaChave');
       const chaveInput = document.getElementById('chave');
-      const chave = chaveInput.value || chaveSelecao.value;
+      const chave = chaveSelecao.value || novaChaveInput.value;
       const ativo = document.getElementById('ativo').checked;
       const atracao = document.getElementById('atracao').value;
       const foto = document.getElementById('foto').value;

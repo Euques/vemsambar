@@ -1,8 +1,5 @@
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,8 +15,10 @@
     <!-- Formulário usando Bootstrap -->
     <form id="promoForm">
       <div class="form-group">
-        <label for="chave">Chave:</label>
-        <input type="text" class="form-control" id="chave" required>
+        <label for="chave">Escolha ou Insira uma Nova Chave:</label>
+        <select class="form-control" id="chaveSelecao" onchange="carregarDados()">
+          <!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
+        </select>
       </div>
 
       <div class="form-group">
@@ -57,7 +56,6 @@
         <input type="text" class="form-control" id="whats" required>
       </div>
 
-      <button type="button" class="btn btn-primary" onclick="carregarDados()">Carregar Dados</button>
       <button type="button" class="btn btn-success" onclick="salvarDados()">Salvar</button>
       <button type="button" class="btn btn-danger" onclick="excluirDados()">Excluir</button>
     </form>
@@ -73,13 +71,14 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "sua-api-key",
-      authDomain: "seu-domínio.firebaseapp.com",
-      databaseURL: "https://seu-domínio.firebaseio.com",
-      projectId: "seu-projeto-id",
-      storageBucket: "seu-domínio.appspot.com",
-      messagingSenderId: "seu-sender-id",
-      appId: "sua-app-id"
+      apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
+      authDomain: "blacknight-600de.firebaseapp.com",
+      databaseURL: "https://blacknight-600de.firebaseio.com",
+      projectId: "blacknight-600de",
+      storageBucket: "blacknight-600de.appspot.com",
+      messagingSenderId: "588926432348",
+      appId: "1:588926432348:web:47b2b4a1b421d4b2a0e299",
+      measurementId: "G-559VYPVJ5Q"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -87,32 +86,52 @@
     const database = firebase.database();
     const promoRef = database.ref('/vemsambar/promo');
 
-    function carregarDados() {
-      const chave = document.getElementById('chave').value;
+    function carregarChaves() {
+      const chaveSelecao = document.getElementById('chaveSelecao');
 
-      promoRef.child(chave).once('value')
+      promoRef.once('value')
         .then((snapshot) => {
-          const dados = snapshot.val();
-
-          if (dados) {
-            document.getElementById('ativo').checked = dados.ativo || false;
-            document.getElementById('atracao').value = dados.atracao || '';
-            document.getElementById('foto').value = dados.foto || '';
-            document.getElementById('info').value = dados.info || '';
-            document.getElementById('preco').value = dados.preco || '';
-            document.getElementById('produto').value = dados.produto || '';
-            document.getElementById('whats').value = dados.whats || '';
-          } else {
-            alert('Nenhum dado encontrado para a chave fornecida.');
-          }
+          chaveSelecao.innerHTML = '<option value="">Escolha ou Insira uma Nova Chave</option>';
+          snapshot.forEach((childSnapshot) => {
+            const chave = childSnapshot.key;
+            chaveSelecao.innerHTML += `<option value="${chave}">${chave}</option>`;
+          });
         })
         .catch((error) => {
-          console.error('Erro ao carregar dados:', error);
+          console.error('Erro ao carregar chaves:', error);
         });
     }
 
+    function carregarDados() {
+      const chaveSelecao = document.getElementById('chaveSelecao');
+      const chave = chaveSelecao.value;
+
+      if (chave) {
+        promoRef.child(chave).once('value')
+          .then((snapshot) => {
+            const dados = snapshot.val();
+
+            if (dados) {
+              document.getElementById('ativo').checked = dados.ativo || false;
+              document.getElementById('atracao').value = dados.atracao || '';
+              document.getElementById('foto').value = dados.foto || '';
+              document.getElementById('info').value = dados.info || '';
+              document.getElementById('preco').value = dados.preco || '';
+              document.getElementById('produto').value = dados.produto || '';
+              document.getElementById('whats').value = dados.whats || '';
+            } else {
+              alert('Nenhum dado encontrado para a chave fornecida.');
+            }
+          })
+          .catch((error) => {
+            console.error('Erro ao carregar dados:', error);
+          });
+      }
+    }
+
     function salvarDados() {
-      const chave = document.getElementById('chave').value;
+      const chaveSelecao = document.getElementById('chaveSelecao');
+      const chave = chaveSelecao.value || document.getElementById('chave').value;
       const ativo = document.getElementById('ativo').checked;
       const atracao = document.getElementById('atracao').value;
       const foto = document.getElementById('foto').value;
@@ -134,6 +153,7 @@
       promoRef.child(chave).set(dadosPromo)
         .then(() => {
           alert('Dados salvos com sucesso!');
+          carregarChaves();
         })
         .catch((error) => {
           console.error('Erro ao salvar dados:', error);
@@ -141,17 +161,23 @@
     }
 
     function excluirDados() {
-      const chave = document.getElementById('chave').value;
+      const chaveSelecao = document.getElementById('chaveSelecao');
+      const chave = chaveSelecao.value;
 
-      promoRef.child(chave).remove()
-        .then(() => {
-          alert('Dados excluídos com sucesso!');
-        })
-        .catch((error) => {
-          console.error('Erro ao excluir dados:', error);
-        });
+      if (chave) {
+        promoRef.child(chave).remove()
+          .then(() => {
+            alert('Dados excluídos com sucesso!');
+            carregarChaves();
+          })
+          .catch((error) => {
+            console.error('Erro ao excluir dados:', error);
+          });
+      }
     }
+
+    // Carregar chaves ao iniciar a página
+    document.addEventListener('DOMContentLoaded', carregarChaves);
   </script>
 </body>
 </html>
-

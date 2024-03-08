@@ -1,9 +1,12 @@
+
+
+
 <!DOCTYPE html>
-<html lang="pt_BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edita Valores</title>
+  <title>CRUD Firebase</title>
   <!-- Adicione a folha de estilo do Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -54,7 +57,8 @@
         <input type="text" class="form-control" id="whats" required>
       </div>
 
-      <button type="button" class="btn btn-primary" onclick="salvarDados()">Salvar</button>
+      <button type="button" class="btn btn-primary" onclick="carregarDados()">Carregar Dados</button>
+      <button type="button" class="btn btn-success" onclick="salvarDados()">Salvar</button>
       <button type="button" class="btn btn-danger" onclick="excluirDados()">Excluir</button>
     </form>
   </div>
@@ -68,24 +72,44 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
-  
-
     const firebaseConfig = {
-apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
-authDomain: "blacknight-600de.firebaseapp.com",
-databaseURL: "https://blacknight-600de.firebaseio.com",
-projectId: "blacknight-600de",
-storageBucket: "blacknight-600de.appspot.com",
-messagingSenderId: "588926432348",
-appId: "1:588926432348:web:47b2b4a1b421d4b2a0e299",
-measurementId: "G-559VYPVJ5Q"
-
-};
+      apiKey: "sua-api-key",
+      authDomain: "seu-domínio.firebaseapp.com",
+      databaseURL: "https://seu-domínio.firebaseio.com",
+      projectId: "seu-projeto-id",
+      storageBucket: "seu-domínio.appspot.com",
+      messagingSenderId: "seu-sender-id",
+      appId: "sua-app-id"
+    };
 
     firebase.initializeApp(firebaseConfig);
 
     const database = firebase.database();
     const promoRef = database.ref('/vemsambar/promo');
+
+    function carregarDados() {
+      const chave = document.getElementById('chave').value;
+
+      promoRef.child(chave).once('value')
+        .then((snapshot) => {
+          const dados = snapshot.val();
+
+          if (dados) {
+            document.getElementById('ativo').checked = dados.ativo || false;
+            document.getElementById('atracao').value = dados.atracao || '';
+            document.getElementById('foto').value = dados.foto || '';
+            document.getElementById('info').value = dados.info || '';
+            document.getElementById('preco').value = dados.preco || '';
+            document.getElementById('produto').value = dados.produto || '';
+            document.getElementById('whats').value = dados.whats || '';
+          } else {
+            alert('Nenhum dado encontrado para a chave fornecida.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao carregar dados:', error);
+        });
+    }
 
     function salvarDados() {
       const chave = document.getElementById('chave').value;
@@ -130,3 +154,4 @@ measurementId: "G-559VYPVJ5Q"
   </script>
 </body>
 </html>
+

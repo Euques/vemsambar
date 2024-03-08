@@ -126,6 +126,15 @@
           .catch((error) => {
             console.error('Erro ao carregar dados:', error);
           });
+      } else {
+        // Limpar os campos para criar uma nova chave
+        document.getElementById('ativo').checked = false;
+        document.getElementById('atracao').value = '';
+        document.getElementById('foto').value = '';
+        document.getElementById('info').value = '';
+        document.getElementById('preco').value = '';
+        document.getElementById('produto').value = '';
+        document.getElementById('whats').value = '';
       }
     }
 

@@ -107,7 +107,8 @@
             const eventosRef = firebase.database().ref(`${cliente}/eventos/${dataTimestamp}`);
             eventosRef.set({
                 data: dataTimestamp,
-                foto: downloadURL,
+                foto: "https://firebasestorage.googleapis.com/v0/b/blacknight-600de.appspot.com/o/vemsambar%2Fpoto.jpg?alt=media&token=bb702345-3b18-4c9e-a2e2-5d58dbe0f74f",
+                flyer: downloadURL,
                 descricao: descricao,
                 promocao: promocao,
                 regra: regra,

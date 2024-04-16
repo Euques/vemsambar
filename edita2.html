@@ -41,8 +41,8 @@
                 <input type="time" class="form-control" id="horaEvento" required>
             </div>
             <div class="form-group">
-                <label for="fotoEvento" class="form-label">Nova Foto do Flyer</label>
-                <input type="file" class="form-control" id="novaFotoEvento" accept="image/*">
+                <label for="flyerEvento" class="form-label">Nova flyer do Flyer</label>
+                <input type="file" class="form-control" id="novaflyerEvento" accept="image/*">
             </div>
             <div class="form-group">
                 <label for="descricao" class="form-label">Nova Descrição</label>
@@ -108,7 +108,7 @@
                 var evento = snapshot.val();
                 var dataEvento = new Date(evento.data).toLocaleString();
                 var descricao = evento.descricao;
-                var foto = evento.foto;
+                var flyer = evento.flyer;
 
                 var option = document.createElement("option");
                 option.value = eventId;
@@ -116,7 +116,7 @@
                 selectEvento.appendChild(option);
 
                 var eventImage = document.createElement("img");
-                eventImage.src = foto;
+                eventImage.src = flyer;
                 eventImage.style.maxWidth = "100px";
                 eventImage.style.borderRadius = "5px";
 
@@ -174,7 +174,7 @@
                         eventDate.innerText = "Data do Evento: " + dataEvento.toLocaleString();
                         eventLink.innerText = "Link: " + (evento.link || "Nenhum");
                         eventButtonTitle.innerText = "Título do Botão: " + (evento.buttonTitle || "Nenhum");
-                        eventImage.src = evento.foto || "";
+                        eventImage.src = evento.flyer || "";
                     }
                 });
             } else {
@@ -215,12 +215,12 @@
             var club = document.getElementById("club").checked;
 
             var eventoRef = firebase.database().ref(cliente + "/eventos/" + selectedEventId);
-            var novaFotoEvento = document.getElementById("novaFotoEvento").files[0];
+            var novaflyerEvento = document.getElementById("novaflyerEvento").files[0];
 
-            if (novaFotoEvento) {
+            if (novaflyerEvento) {
                 // Fazer o upload da nova imagem para o Firebase Storage
-                var storageRef = firebase.storage().ref(cliente + "/eventos/" + selectedEventId + "/foto");
-                var uploadTask = storageRef.put(novaFotoEvento);
+                var storageRef = firebase.storage().ref(cliente + "/eventos/" + selectedEventId + "/flyer");
+                var uploadTask = storageRef.put(novaflyerEvento);
 
                 // Lidar com o sucesso e falha do upload
                 uploadTask.on(
@@ -240,7 +240,7 @@
                                 regra: regra,
                                 link: link,
                                 buttonTitle: buttonTitle,
-                                foto: downloadURL,
+                                flyer: downloadURL,
                                 club: club // Atualize o valor do nó "club" no Firebase
                             })
                             .then(function () {

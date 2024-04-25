@@ -73,6 +73,363 @@
         .cropper-view-box,
         .cropper-face {
             border-radius: 50%;
+        }
+
+
+        .cropper-point.point-se {
+            bottom: -3px;
+            cursor: nwse-resize;
+            height: 30px;
+            opacity: 1;
+            right: -3px;
+            width: 30px;
+            border-radius: 50%;
+        }
+
+        .rounded {
+            border-radius: 50% !important;
+            height: 160px;
+        }
+
+
+        .modal-content {
+
+            background-color: #1f1f1f;
+
+        }
+        
+        .modal-dialog {
+    position: relative;
+    width: auto;
+                margin: 0px;
+   
+    pointer-events: none;
+}
+        
+        .modal-body {
+    position: relative;
+    flex: 1 1 auto;
+        padding: 1rem 2rem 1rem 2rem;
+}
+
+        .modal-header {
+
+            border-bottom: 2px solid #424141;
+
+        }
+
+        .modal-footer {
+            border-top: 2px solid #424141;
+
+        }
+
+
+
+        .form-outline .form-control~.form-label {
+
+            color: #e0e0e0;
+
+        }
+
+        .cropper-modal {
+            background-color: #000000;
+            opacity: 0.9;
+        }
+
+        .container {
+            width: 90%;
+            padding: 20px;
+
+            margin-top: 20px;
+
+            
+            border: 1px solid rgb(43, 43, 43);
+            border-radius: 20px;
+
+        }
+        
+        
+        .cropper-wrap-box, .cropper-canvas, .cropper-drag-box, .cropper-crop-box, .cropper-modal {
+    border-radius: 20px;
+}
+        .cropper-container {
+
+    border-radius: 20px;
+}
+
+
+    </style>
+
+    <style type="text/css">
+        @font-face {
+            font-family: Roboto;
+            src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf");
+        }
+    </style>
+
+      
+</head>
+
+<body>
+    
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+
+   var firebaseConfig = {
+            apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
+            authDomain: "blacknight-600de.firebaseapp.com",
+            databaseURL: "https://blacknight-600de.firebaseio.com",
+            projectId: "blacknight-600de",
+            storageBucket: "blacknight-600de.appspot.com",
+            messagingSenderId: "588926432348",
+            appId: "1:588926432348:web:47b2b4a1b421d4b2a0e299",
+            measurementId: "G-559VYPVJ5Q"
+
+        };
+
+
+    
+
+        // Initialize Firebase
+
+        firebase.initializeApp(firebaseConfig);
+
+</script>
+    
+    
+    
+    
+    <div class="container text-center ">
+        <h1 id="mApelido" class="display-4">Escolha uma foto</h1>
+
+        <label class="label" data-toggle="tooltip" title="" data-original-title="Escolha sua foto">
+            <img class="rounded" id="avatar" src="https://firebasestorage.googleapis.com/v0/b/inovabarapp.appspot.com/o/promo%2Fcamera2.jpeg?alt=media&token=cab19dad-ab65-4b83-ba69-8cd97513237c" alt="avatar">
+            <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+        </label>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <div class="alert" role="alert"></div>
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Preencha seus dados</h5>
+
+                        <button type="button" class="btn-close btn-close-white" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="img-container">
+                            <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
+                        </div>
+                    </div>
+
+
+                    <div class="form-outline form-white modal-body">
+
+                        <form role="form" id="newModalForm" class="needs-validation" novalidate>
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" id="apelido" name="apelido" required>
+                                <label class="form-label" for="apelido">Seu Apelido</label>
+                                <div class="form-helper">O apelido aparecerá pra seus convidados</div>
+                                <div class="invalid-feedback">
+                                    Voce precisa por um Apelido.
+                                </div>
+
+                            </div>
+                            <div class="form-outline mb-4">
+
+                                <input type="text" class="form-control" id="nome">
+                                <label class="form-label" for="nome">Seu Nome Completo:</label>
+                            </div>
+                            <div class="form-outline mb-4">
+
+                                <input type="date" class="form-control" id="data">
+                                <label class="form-label" for="data">Seu Aniversário</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+
+                                <input type="number" class="form-control" id="whats">
+                                <label class="form-label" for="whats">Seu Whatsapp:</label>
+                                <div class="form-helper">Você será identificado por esse número</div>
+                            </div>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary"
+                            data-mdb-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="crop" disabled>Cadastrar Aniversário</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container" class="container text-left">
+        <div class="wrapper">
+            <div class="inner">
+                <h4 id="text04">Olha o que vc ganha</h4>
+                <div id="" class="style1 list">
+
+                        <ul>
+                        <li>
+                            <p><strong>Reserva de 1 Bistro</strong></p>
+                        </li>
+                        <li>
+                            <p><strong>Flyer e Link virtual</strong> c/ sua foto</p>
+                        </li>
+                        <li>
+                            <p><strong>Vip para o aniversariante e Acompanhante</strong></p>
+                        </li>
+
+                        <li>
+                            <p><strong>1 Gin tônica</strong></p>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <h4 id="" >com 15 convidados pagantes</h4>
+                <div id="" class="">
+                    <ul class="">
+                        <li >
+                            <p>1 <strong>Garrafa de (Black, ou Ciroc Red, ou Tanqueray)</strong></p>
+                        </li>
+                        <li>
+                            <p>1 <strong>Balde de Heineken</strong> long neck com 6 unidades</p>
+                        </li>
+                        <li>
+                            <p><strong>R$300 de consumação na comanda do aniversariante</strong></p>
+                        </li>
+                    </ul>
+                    
+
+                    
+                 <!--   <ul>
+                        <li>
+                            <p><strong>Reserva de um Bistro</strong></p>
+                        </li>
+                        <li>
+                            <p><strong>Flyer virtual</strong> c/ sua foto</p>
+                        </li>
+                        <li>
+                            <p><strong>Vip para o aniversariante</strong></p>
+                        </li>
+                        <li>
+                            <p><strong>01 Gin tônica</strong></p>
+                        </li>
+                    </ul>
+                </div>
+                <h4 id="" >com 20 convidados pagantes</h4>
+                <div id="" class="">
+                    <ul class="">
+                        <li >
+                            <p>1 <strong>Garrafa de red label</strong></p>
+                        </li>
+                        <li>
+                            <p>1 <strong>Balde de Heineken</strong> long neck com 6 unidades</p>
+                        </li>
+                    </ul> -->
+                </div>
+                <h4 id="" >*PROMOÇÃO ESPECIAL PARA ANIVERSARIANTES DE SABADO À TARDE </h4>
+            </div>
+        </div>
+    </div>
+<br>
+    <!-- MDB -->
+
+
+
+ 
+     <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="crooper/cropper.js"></script>
+   
+
+    <script>
+        
+        
+        const { search } = window.location
+const params = new URLSearchParams(search)
+const pegaA = params.get('a')
+
+var parentURL = window != window.parent ? document.referrer : null;
+
+
+        $(document).ready(function () {
+            $('#whats').on('input', function () {
+                $('#crop').prop('disabled', $('#apelido').val().length < 2 || $('#whats').val().length < 3 );
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', function () {
+            var avatar = document.getElementById('avatar');
+            var image = document.getElementById('image');
+            var input = document.getElementById('input');
+
+
+
+            var $progress = $('.progress');
+            var $progressBar = $('.progress-bar');
+            var $alert = $('.alert');
+            var $modal = $('#modal');
+            var cropper;
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            input.addEventListener('change', function (e) {
+                var files = e.target.files;
+                var done = function (url) {
+                    input.value = '';
+                    image.src = url;
+                    $alert.hide();
+                    $modal.modal('show');
+                };
+                var reader;
+                var file;
+                var url;
+
+                if (files && files.length > 0) {
+                    file = files[0];
+
+                    if (URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        reader.onload = function (e) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+
+            $modal.on('shown.bs.modal', function () {
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 3,
+                });
             }).on('hidden.bs.modal', function () {
                 cropper.destroy();
                 cropper = null;
@@ -112,7 +469,7 @@
                                 }
                             ).once('value', (snap) => {
                                 var idVal = snap.val()
-                                var idFoto = snap.Key
+                                var idFoto = snap.key
 
 
                                 console.log(`id foto é ${snap.key}`)
@@ -122,7 +479,7 @@
 
                                 const base64 = avatar.src.split('base64,')[1]
                                 firebase.storage().ref(`bday${anoAtual}/${snap.key}.png`).putString(base64, 'base64', { contentType: 'image/png' }).then(snapshot => {
-                                    console.log('snapshot', snapshot)
+                                    console.log("A imagem foi salva no Storage")
 
                                     firebase.storage().ref(`bday${anoAtual}/${snap.key}.png`).getDownloadURL().then(url => {
                                         console.log('endereço', url)
@@ -133,8 +490,9 @@
                                         var data = document.getElementById('data').value
                                         var whats = document.getElementById('whats').value
 
-                                        var promo1 = "Com 15 convidados pagantes até 2H o aniversariante ganha 1 garrafa de Vodka Smirnoff ou Gin Nacional"
+                                        var promo1 = "20 pagantes ganha uma garrafa de Red Label e 1 balde long neck Heineikey com 6 und."
                                        
+
 
                                         firebase.database()
                                             .ref(`${pegaA}/bday/${snap.key}`)
@@ -202,7 +560,6 @@
 
     </script>
 
-  
 
 
 </body>

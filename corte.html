@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="pt_BR">
 
@@ -166,8 +169,6 @@
             src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf");
         }
     </style>
-
-      
 </head>
 
 <body>
@@ -182,24 +183,21 @@
 
 <script>
 
-   var firebaseConfig = {
-            apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
-            authDomain: "blacknight-600de.firebaseapp.com",
-            databaseURL: "https://blacknight-600de.firebaseio.com",
-            projectId: "blacknight-600de",
-            storageBucket: "blacknight-600de.appspot.com",
-            messagingSenderId: "588926432348",
-            appId: "1:588926432348:web:47b2b4a1b421d4b2a0e299",
-            measurementId: "G-559VYPVJ5Q"
+  var firebaseConfig = {
+        apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
+        authDomain: "blacknight-600de.firebaseapp.com",
+        databaseURL: "https://blacknight-600de.firebaseio.com",
+        projectId: "blacknight-600de",
+        storageBucket: "blacknight-600de.appspot.com",
+        messagingSenderId: "588926432348",
+        appId: "1:588926432348:web:47b2b4a1b421d4b2a0e299",
+        measurementId: "G-559VYPVJ5Q"
 
-        };
+    };
 
+    // Initialize Firebase
 
-    
-
-        // Initialize Firebase
-
-        firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
 
 </script>
     
@@ -282,72 +280,32 @@
         </div>
     </div>
 
-    <div id="container" class="container text-left">
+  <div id="container" class="container text-left">
         <div class="wrapper">
             <div class="inner">
                 <h4 id="text04">Olha o que vc ganha</h4>
                 <div id="" class="style1 list">
-
-                        <ul>
+                    <ul>
                         <li>
-                            <p><strong>Reserva de 1 Bistro</strong></p>
-                        </li>
-                        <li>
-                            <p><strong>Flyer e Link virtual</strong> c/ sua foto</p>
-                        </li>
-                        <li>
-                            <p><strong>Vip para o aniversariante e Acompanhante</strong></p>
-                        </li>
-
-                        <li>
-                            <p><strong>1 Gin tônica</strong></p>
+                            <p><strong>Link da lista para convidar os amigos</strong> c/ seu nome</p>
                         </li>
                         
-                    </ul>
-                </div>
-                <h4 id="" >com 15 convidados pagantes</h4>
-                <div id="" class="">
-                    <ul class="">
-                        <li >
-                            <p>1 <strong>Garrafa de (Black, ou Ciroc Red, ou Tanqueray)</strong></p>
-                        </li>
-                        <li>
-                            <p>1 <strong>Balde de Heineken</strong> long neck com 6 unidades</p>
-                        </li>
-                        <li>
-                            <p><strong>R$300 de consumação na comanda do aniversariante</strong></p>
-                        </li>
-                    </ul>
-                    
-
-                    
-                 <!--   <ul>
-                        <li>
-                            <p><strong>Reserva de um Bistro</strong></p>
-                        </li>
                         <li>
                             <p><strong>Flyer virtual</strong> c/ sua foto</p>
                         </li>
                         <li>
-                            <p><strong>Vip para o aniversariante</strong></p>
+                            <p><strong>Vip para o aniversariante + acompanhante</strong></p>
                         </li>
-                        <li>
-                            <p><strong>01 Gin tônica</strong></p>
-                        </li>
+                      
                     </ul>
                 </div>
-                <h4 id="" >com 20 convidados pagantes</h4>
+                <h4 id="" >com 15 convidados pagantes até 2H</h4>
                 <div id="" class="">
                     <ul class="">
                         <li >
-                            <p>1 <strong>Garrafa de red label</strong></p>
-                        </li>
-                        <li>
-                            <p>1 <strong>Balde de Heineken</strong> long neck com 6 unidades</p>
-                        </li>
-                    </ul> -->
+                            <p>1 <strong>Garrafa de Smirnoff ou Gim Nacional</strong></p>
+                    </ul>
                 </div>
-                <h4 id="" >*PROMOÇÃO ESPECIAL PARA ANIVERSARIANTES DE SABADO À TARDE </h4>
             </div>
         </div>
     </div>
@@ -356,16 +314,10 @@
 
 
 
- 
-     <script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"></script>
-
-     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+    <script src="https://unpkg.com/jquery@3/dist/jquery.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="crooper/cropper.js"></script>
-   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
 
     <script>
         
@@ -469,7 +421,7 @@ var parentURL = window != window.parent ? document.referrer : null;
                                 }
                             ).once('value', (snap) => {
                                 var idVal = snap.val()
-                                var idFoto = snap.key
+                                var idFoto = snap.Key
 
 
                                 console.log(`id foto é ${snap.key}`)
@@ -479,7 +431,7 @@ var parentURL = window != window.parent ? document.referrer : null;
 
                                 const base64 = avatar.src.split('base64,')[1]
                                 firebase.storage().ref(`bday${anoAtual}/${snap.key}.png`).putString(base64, 'base64', { contentType: 'image/png' }).then(snapshot => {
-                                    console.log("A imagem foi salva no Storage")
+                                    console.log('snapshot', snapshot)
 
                                     firebase.storage().ref(`bday${anoAtual}/${snap.key}.png`).getDownloadURL().then(url => {
                                         console.log('endereço', url)
@@ -490,9 +442,8 @@ var parentURL = window != window.parent ? document.referrer : null;
                                         var data = document.getElementById('data').value
                                         var whats = document.getElementById('whats').value
 
-                                        var promo1 = "20 pagantes ganha uma garrafa de Red Label e 1 balde long neck Heineikey com 6 und."
+                                        var promo1 = "Com 15 convidados pagantes até 2H o aniversariante ganha 1 garrafa de Vodka Smirnoff ou Gin Nacional"
                                        
-
 
                                         firebase.database()
                                             .ref(`${pegaA}/bday/${snap.key}`)
@@ -560,6 +511,7 @@ var parentURL = window != window.parent ? document.referrer : null;
 
     </script>
 
+  
 
 
 </body>
@@ -567,3 +519,4 @@ var parentURL = window != window.parent ? document.referrer : null;
 
 
 </html>
+

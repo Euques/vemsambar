@@ -343,6 +343,7 @@
 const params = new URLSearchParams(search)
 const pegaA = params.get('a')
 const diaEvento = params.get('d')
+const pegaAtr = params.get('atr')
 
 
 
@@ -473,7 +474,8 @@ const diaEvento = params.get('d')
                                                     aprovado: false,
                                                     apelido: 'B-day ' + apelido,
                                                     nome: nome,
-                                                    data: diaEvento,
+                                                    data: parseInt(diaEvento),
+                                                    descricao: pegaAtr,
                                                     bday: data,
                                                     whats: whats,
                                                     status: 'Aniversariante',

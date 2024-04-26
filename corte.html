@@ -342,6 +342,7 @@
         const { search } = window.location
 const params = new URLSearchParams(search)
 const pegaA = params.get('a')
+const diaEvento = params.get('d')
 
 var parentURL = window != window.parent ? document.referrer : null;
 
@@ -472,7 +473,8 @@ var parentURL = window != window.parent ? document.referrer : null;
                                                     aprovado: false,
                                                     apelido: 'B-day ' + apelido,
                                                     nome: nome,
-                                                    data: data,
+                                                    data: diaEvento,
+                                                    bday: data,
                                                     whats: whats,
                                                     status: 'Aniversariante',
                                                     regra: promo1

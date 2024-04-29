@@ -73,12 +73,9 @@
         const eventoForm = document.getElementById("eventoForm");
         const linkAndTitleFields = document.getElementById("linkAndTitleFields");
         const toggleLink = document.getElementById("toggleLink");
-        const descricaoField = document.getElementById("descricao");
 
-        toggleLink.style.display = "none"; // Inicialmente oculto
-
-        descricaoField.addEventListener("click", function () {
-            toggleLink.style.display = "block"; // Mostra o botão ao clicar no campo de descrição
+        toggleLink.addEventListener("click", function () {
+            linkAndTitleFields.style.display = linkAndTitleFields.style.display === "none" ? "block" : "none";
         });
 
         eventoForm.addEventListener("submit", async function (e) {

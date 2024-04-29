@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="pt_BR">
 <head>
@@ -63,7 +66,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
 <script>
-        var firebaseConfig = {
+          var firebaseConfig = {
         apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
         authDomain: "blacknight-600de.firebaseapp.com",
         databaseURL: "https://blacknight-600de.firebaseio.com",
@@ -132,7 +135,7 @@
             // Salva todos os dados do evento, incluindo 'promo', na chave do evento recém-criado
             eventosRef.set(eventoData)
             .then(function () {
-                // Obtém a chave gerada automaticamente e a utiliza para preencher o campo de link
+                // Atribui o valor do link com a nova chave
                 const novoEventoKey = eventosRef.key;
                 document.getElementById("link").value = `https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}`;
                 
@@ -149,3 +152,4 @@
 
 </body>
 </html>
+

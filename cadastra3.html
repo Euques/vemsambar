@@ -39,7 +39,7 @@
             <div id="linkAndTitleFields" style="display: none;">
                 <div class="form-group">
                     <label for="link" class="form-label">Link</label>
-                    <input type="url" class="form-control custom-placeholder" id="link" placeholder="https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}" value="https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}">
+                    <input type="url" class="form-control custom-placeholder" id="link" placeholder="https://lista.vemsambar.club/?p=vemsambar/eventos/">
                 </div>
                 <div class="form-group">
                     <label for="buttonTitle" class="form-label">Título do Botão</label>
@@ -62,8 +62,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
-    <script>
-          var firebaseConfig = {
+<script>
+        var firebaseConfig = {
         apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
         authDomain: "blacknight-600de.firebaseapp.com",
         databaseURL: "https://blacknight-600de.firebaseio.com",
@@ -74,73 +74,78 @@
         measurementId: "G-559VYPVJ5Q"
     };
 
-        firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
 
-        const cliente = "vemsambar";
-        const eventoForm = document.getElementById("eventoForm");
-        const linkAndTitleFields = document.getElementById("linkAndTitleFields");
-        const toggleLink = document.getElementById("toggleLink");
+    const cliente = "vemsambar";
+    const eventoForm = document.getElementById("eventoForm");
+    const linkAndTitleFields = document.getElementById("linkAndTitleFields");
+    const toggleLink = document.getElementById("toggleLink");
 
-        toggleLink.addEventListener("click", function () {
-            linkAndTitleFields.style.display = linkAndTitleFields.style.display === "none" ? "block" : "none";
-        });
+    toggleLink.addEventListener("click", function () {
+        linkAndTitleFields.style.display = linkAndTitleFields.style.display === "none" ? "block" : "none";
+    });
 
-        eventoForm.addEventListener("submit", async function (e) {
-            e.preventDefault();
+    eventoForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-            const dataEvento = document.getElementById("dataEvento").value;
-            const horaEvento = document.getElementById("horaEvento").value;
-            const fotoEvento = document.getElementById("fotoEvento").files[0];
-            const descricao = document.getElementById("descricao").value;
-            const promocao = document.getElementById("promocao").value;
-            const regra = document.getElementById("regra").value;
-            const link = document.getElementById("link").value;
-            const buttonTitle = document.getElementById("buttonTitle").value;
-            const club = document.getElementById("clubCheckbox").checked;
+        const dataEvento = document.getElementById("dataEvento").value;
+        const horaEvento = document.getElementById("horaEvento").value;
+        const fotoEvento = document.getElementById("fotoEvento").files[0];
+        const descricao = document.getElementById("descricao").value;
+        const promocao = document.getElementById("promocao").value;
+        const regra = document.getElementById("regra").value;
+        const link = document.getElementById("link").value;
+        const buttonTitle = document.getElementById("buttonTitle").value;
+        const club = document.getElementById("clubCheckbox").checked;
 
-            const dataTimestamp = new Date(`${dataEvento}T${horaEvento}:00`).getTime();
+        const dataTimestamp = new Date(`${dataEvento}T${horaEvento}:00`).getTime();
 
-            const storageRef = firebase.storage().ref(`${new Date().getFullYear()}/${cliente}/${fotoEvento.name}`);
-            const snapshot = await storageRef.put(fotoEvento);
-            const downloadURL = await snapshot.ref.getDownloadURL();
+        const storageRef = firebase.storage().ref(`${new Date().getFullYear()}/${cliente}/${fotoEvento.name}`);
+        const snapshot = await storageRef.put(fotoEvento);
+        const downloadURL = await snapshot.ref.getDownloadURL();
 
-            const promoRef = firebase.database().ref(`${cliente}/promo`);
+        const promoRef = firebase.database().ref(`${cliente}/promo`);
 
-            // Escuta uma vez para obter os dados de promoção
-            promoRef.once('value', (snapshot) => {
-                const promocaoData = snapshot.val();
+        // Escuta uma vez para obter os dados de promoção
+        promoRef.once('value', (snapshot) => {
+            const promocaoData = snapshot.val();
+            
+            // Cria um objeto com todos os dados do evento, incluindo 'promo'
+            const eventoData = {
+                data: dataTimestamp,
+                foto: "https://firebasestorage.googleapis.com/v0/b/blacknight-600de.appspot.com/o/vemsambar%2Ffoto.jpg?alt=media&token=763df007-5512-4471-bdd3-bcb6d824514e",
+                flyer: downloadURL,
+                descricao: descricao,
+                promocao: promocao,
+                regra: regra,
+                link: link,
+                buttonTitle: buttonTitle,
+                club: club,
+                apelido: "Prime",
+                status: "Promoção", 
+                whats: "11989783561",
+                promo: promocaoData // Adiciona os dados de promoção
+            };
+
+            const eventosRef = firebase.database().ref(`${cliente}/eventos`).push();
+
+            // Salva todos os dados do evento, incluindo 'promo', na chave do evento recém-criado
+            eventosRef.set(eventoData)
+            .then(function () {
+                // Obtém a chave gerada automaticamente e a utiliza para preencher o campo de link
+                const novoEventoKey = eventosRef.key;
+                document.getElementById("link").value = `https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}`;
                 
-                // Cria um objeto com todos os dados do evento, incluindo 'promo'
-                const eventoData = {
-                    data: dataTimestamp,
-                    foto: "https://firebasestorage.googleapis.com/v0/b/blacknight-600de.appspot.com/o/vemsambar%2Ffoto.jpg?alt=media&token=763df007-5512-4471-bdd3-bcb6d824514e",
-                    flyer: downloadURL,
-                    descricao: descricao,
-                    promocao: promocao,
-                    regra: regra,
-                    link: link,
-                    buttonTitle: buttonTitle,
-                    club: club,
-                    apelido: "Prime",
-                    status: "Promoção", 
-                    whats: "11989783561",
-                    promo: promocaoData // Adiciona os dados de promoção
-                };
-
-                const eventosRef = firebase.database().ref(`${cliente}/eventos`).push();
-
-                // Salva todos os dados do evento, incluindo 'promo', na chave do evento recém-criado
-                eventosRef.set(eventoData)
-                .then(function () {
-                    alert("Evento cadastrado com sucesso!");
-                    location.reload();
-                })
-                .catch(function (error) {
-                    alert("Erro ao cadastrar evento: " + error.message);
-                });
+                // Mostra o alerta e recarrega a página após o cadastro bem-sucedido
+                alert("Evento cadastrado com sucesso!");
+                location.reload();
+            })
+            .catch(function (error) {
+                alert("Erro ao cadastrar evento: " + error.message);
             });
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

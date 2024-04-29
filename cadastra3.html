@@ -132,8 +132,10 @@
             // Salva todos os dados do evento, incluindo 'promo', na chave do evento recém-criado
             eventosRef.set(eventoData)
             .then(function () {
-                // Atribui o valor do link com a nova chave
+                // Obtém a chave do novo evento
                 const novoEventoKey = eventosRef.key;
+                
+                // Atualiza o valor do link com a nova chave
                 document.getElementById("link").value = `https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}`;
                 
                 // Mostra o alerta e recarrega a página após o cadastro bem-sucedido

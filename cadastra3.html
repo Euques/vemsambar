@@ -104,7 +104,7 @@
                 descricao: descricao,
                 promocao: promocao,
                 regra: regra,
-                link: `https://lista.vemsambar.club/?p=vemsambar/eventos/${eventoRef.key}`,
+                link: null, // Será preenchido com a URL após a inserção no banco de dados
                 buttonTitle: buttonTitle,
                 club: club,
                 apelido: "Prime",
@@ -115,6 +115,9 @@
 
             const eventosRef = firebase.database().ref(`${cliente}/eventos`);
             const eventoRef = eventosRef.push();
+
+            // Define o link com a URL correta
+            eventoData.link = `https://lista.vemsambar.club/?p=vemsambar/eventos/${eventoRef.key}`;
 
             // Salva todos os dados do evento, incluindo 'promo', na chave do evento recém-criado
             eventoRef.set(eventoData)

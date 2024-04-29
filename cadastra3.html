@@ -108,7 +108,7 @@
                 descricao: descricao,
                 promocao: promocao,
                 regra: regra,
-                link: "", // Deixando vazio para ser preenchido posteriormente
+                link: null, // Inicialmente null
                 buttonTitle: buttonTitle,
                 club: club,
                 apelido: "Prime",
@@ -126,7 +126,8 @@
                 const novoEventoKey = eventosRef.key;
                 
                 // Atualiza o valor do link com a nova chave
-                document.getElementById("link").value = `https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}`;
+                const linkInput = document.getElementById("link");
+                linkInput.value = `https://lista.vemsambar.club/?p=vemsambar/eventos/${novoEventoKey}`;
                 
                 // Mostra o alerta e recarrega a página após o cadastro bem-sucedido
                 alert("Evento cadastrado com sucesso!");

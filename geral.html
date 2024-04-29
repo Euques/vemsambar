@@ -282,7 +282,7 @@ const pegaA = params.get('a')
         var dadosMostraRegras = ""
 
 
-        firebase.database().ref('promo/')
+        firebase.database().ref(ˋ${pegaA}/promo/ˋ)
             .orderByChild('apelido')
             //.equalTo(true)
             .once('child_added', (snapshot) => {

@@ -35,16 +35,13 @@
                 <label for="regra" class="form-label">Regra</label>
                 <input type="text" class="form-control" id="regra">
             </div>
-            <button type="button" class="btn btn-secondary mt-2" id="toggleLink">Adicionar Link e Título</button>
-            <div id="linkAndTitleFields" style="display: none;">
-                <div class="form-group">
-                    <label for="link" class="form-label">Link</label>
-                    <input type="url" class="form-control custom-placeholder" id="link" placeholder="https://lista.vemsambar.club/?p=vemsambar/eventos/" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="buttonTitle" class="form-label">Título do Botão</label>
-                    <input type="text" class="form-control custom-placeholder" id="buttonTitle" placeholder="Lista Prime" value="Lista Prime">
-                </div>
+            <div class="form-group" style="display: none;">
+                <label for="link" class="form-label">Link</label>
+                <input type="url" class="form-control custom-placeholder" id="link" placeholder="https://lista.vemsambar.club/?p=vemsambar/eventos/" readonly>
+            </div>
+            <div class="form-group">
+                <label for="buttonTitle" class="form-label">Título do Botão</label>
+                <input type="text" class="form-control custom-placeholder" id="buttonTitle" placeholder="Lista Prime" value="Lista Prime">
             </div>
             <div class="form-group">
                 <label for="clubCheckbox" class="form-label">Club de clientes</label>
@@ -63,7 +60,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
 <script>
-        var firebaseConfig = {
+    var firebaseConfig = {
         apiKey: "AIzaSyCLEyAd_4-2n2ID0xTjwS1ouip9G9C6JDs",
         authDomain: "blacknight-600de.firebaseapp.com",
         databaseURL: "https://blacknight-600de.firebaseio.com",
@@ -78,12 +75,6 @@
 
     const cliente = "vemsambar";
     const eventoForm = document.getElementById("eventoForm");
-    const linkAndTitleFields = document.getElementById("linkAndTitleFields");
-    const toggleLink = document.getElementById("toggleLink");
-
-    toggleLink.addEventListener("click", function () {
-        linkAndTitleFields.style.display = linkAndTitleFields.style.display === "none" ? "block" : "none";
-    });
 
     eventoForm.addEventListener("submit", async function (e) {
         e.preventDefault();
@@ -94,7 +85,6 @@
         const descricao = document.getElementById("descricao").value;
         const promocao = document.getElementById("promocao").value;
         const regra = document.getElementById("regra").value;
-        const link = document.getElementById("link").value;
         const buttonTitle = document.getElementById("buttonTitle").value;
         const club = document.getElementById("clubCheckbox").checked;
 
@@ -118,7 +108,7 @@
                 descricao: descricao,
                 promocao: promocao,
                 regra: regra,
-                link: link,
+                link: "", // Deixando vazio para ser preenchido posteriormente
                 buttonTitle: buttonTitle,
                 club: club,
                 apelido: "Prime",
@@ -151,5 +141,3 @@
 
 </body>
 </html>
-
-

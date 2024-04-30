@@ -213,7 +213,7 @@ measurementId: "G-559VYPVJ5Q"
         function updateMostraRegras() {
             var dadosMostraRegras = '';
 
-            firebase.database().ref(`${pegaA}`)
+            firebase.database().ref(`${pegaA}/promo/`)
                 .orderByChild('apelido')
                 .on('child_added', (snapshot) => {
                     var resultado = snapshot.val();

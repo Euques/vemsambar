@@ -6,33 +6,54 @@
   <title>JSON para Tabela HTML</title>
   <!-- Adicione o Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Estilo personalizado para melhorar o layout */
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 30px;
+    }
+    th, td {
+      border: 1px solid #dee2e6;
+      padding: 8px;
+    }
+    tbody tr:nth-child(odd) {
+      background-color: #f2f2f2;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Dados JSON em Tabela HTML</h1>
+    <h1 class="mb-4">Dados JSON em Tabela HTML</h1>
     <div class="form-group">
       <label for="urlInput">URL do JSON:</label>
       <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
     </div>
     <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
-    <table class="table mt-3">
-      <thead>
-        <tr>
-          <th>Atração</th>
-          <th>Checkin</th>
-          <th>Descrição</th>
-          <th>Documento</th>
-          <th>Email</th>
-          <th>Nome</th>
-          <th>PIX</th>
-          <th>Preço</th>
-          <th>Produto</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-dados">
-        <!-- Os dados serão inseridos aqui -->
-      </tbody>
-    </table>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Atração</th>
+            <th>Checkin</th>
+            <th>Descrição</th>
+            <th>Documento</th>
+            <th>Email</th>
+            <th>Nome</th>
+            <th>PIX</th>
+            <th>Preço</th>
+            <th>Produto</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-dados">
+          <!-- Os dados serão inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Adicione o Bootstrap JS e o jQuery (necessário para o Bootstrap) -->
@@ -47,7 +68,7 @@
         $.getJSON(url, function(data) {
           var items = [];
           $.each(data, function(_, val) {
-            items.push("<tr><td>" + val.atracao + "</td><td>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>" + val.descricao + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.nome + "</td><td>" + val.pix + "</td><td>" + val.preco + "</td><td>" + val.produto + "</td></tr>");
+            items.push("<tr><td>" + val.atracao + "</td><td>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>" + val.descricao + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.nome + "</td><td>" + val.pix + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td><td>" + val.produto + "</td></tr>");
           });
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {

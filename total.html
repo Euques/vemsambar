@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON para Tabela HTML</title>
+  <!-- Adicione o Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Dados JSON em Tabela HTML</h1>
+    <div class="form-group">
+      <label for="urlInput">URL do JSON:</label>
+      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
+    </div>
+    <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th>Chave</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-dados">
+        <!-- Os dados serão inseridos aqui -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Adicione o Bootstrap JS e o jQuery (necessário para o Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // Função para fazer a requisição à URL com o JSON e criar a tabela
+    $(document).ready(function() {
+      $("#buscarDados").click(function() {
+        var url = $("#urlInput").val();
+        $.getJSON(url, function(data) {
+          var items = [];
+          $.each(data, function(key, val) {
+            items.push("<tr><td>" + key + "</td><td>" + val + "</td></tr>");
+          });
+          $("#tabela-dados").html(items.join(""));
+        }).fail(function() {
+          alert("Falha ao buscar dados. Verifique a URL fornecida.");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

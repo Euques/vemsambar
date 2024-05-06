@@ -28,7 +28,7 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="mb-4">Dados JSON em Tabela HTML</h1>
+    <h1 id="titulo-tabela" class="mb-4"></h1>
     <div class="form-group">
       <label for="urlInput">URL do JSON:</label>
       <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
@@ -38,15 +38,11 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>Atração</th>
-            <th>Checkin</th>
-            <th>Descrição</th>
+            <th>Nome</th>
             <th>Documento</th>
             <th>Email</th>
-            <th>Nome</th>
             <th>PIX</th>
             <th>Preço</th>
-            <th>Produto</th>
           </tr>
         </thead>
         <tbody id="tabela-dados">
@@ -67,8 +63,10 @@
         var url = $("#urlInput").val();
         $.getJSON(url, function(data) {
           var items = [];
+          var primeiraAtracao = Object.values(data)[0].atracao;
+          $("#titulo-tabela").text(primeiraAtracao);
           $.each(data, function(_, val) {
-            items.push("<tr><td>" + val.atracao + "</td><td>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>" + val.descricao + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.nome + "</td><td>" + val.pix + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td><td>" + val.produto + "</td></tr>");
+            items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
           });
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {

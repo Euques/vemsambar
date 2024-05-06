@@ -90,7 +90,7 @@
         $.getJSON(url, function(data) {
           var items = [];
           var totalIngressos = Object.keys(data).length;
-          var somaPrecos = 0;
+          var totalPrecos = {};
           var totalCheckinSim = 0;
           var totalCheckinNao = 0;
           var primeiraAtracao = Object.values(data)[0].atracao;
@@ -98,7 +98,7 @@
 
           // Calculando as somas e contagens
           $.each(data, function(_, val) {
-            somaPrecos += parseFloat(val.preco);
+            totalPrecos[val.nome] = (totalPrecos[val.nome] || 0) + parseFloat(val.preco);
             if (val.checkin) {
               totalCheckinSim++;
             } else {
@@ -108,7 +108,14 @@
 
           // Adicionando as somas e contagens nas tabelas
           $("#soma-checkin").html("<tr><td>Check-in Sim</td><td>" + totalCheckinSim.toLocaleString('pt-BR') + "</td></tr><tr><td>Check-in Não</td><td>" + totalCheckinNao.toLocaleString('pt-BR') + "</td></tr>");
-          $("#soma-preco").html("<tr><td>Total Preço</td><td>R$ " + somaPrecos.toLocaleString('pt-BR', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + "</td></tr>");
+          var totalPrecoHTML = "";
+          for (const [nome, preco] of Object.entries(totalPrecos)) {
+            totalPrecoHTML += "<tr><td>" + nome + "</td><td>R$ " + preco.toLocaleString('pt-BR', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + "</td></tr>";
+          }
+          $("#soma-preco").html(totalPrecoHTML);
+
+          // Adicionando o total de ingressos
+          $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos.toLocaleString('pt-BR') + "</p>");
 
           // Adicionando os dados na tabela principal
           $.each(data, function(_, val) {
@@ -116,10 +123,6 @@
             items.push("<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(0) + "</td></tr>");
           });
 
-          // Adicionando o total de ingressos
-          $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos.toLocaleString('pt-BR') + "</p>");
-
-          // Adicionando os dados na tabela principal
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");

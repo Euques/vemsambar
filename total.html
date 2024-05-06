@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check-in Vem Sambar</title>
+  <title>JSON para Tabela HTML</title>
   <!-- Adicione o Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -64,7 +64,7 @@
       </table>
     </div>
     <div id="tabela-checkin-sim" class="mt-4">
-      <h2>Presentes</h2>
+      <h2>Participantes que fizeram check-in</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -72,7 +72,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check</th>
+            <th>Check-in</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -82,7 +82,7 @@
       </table>
     </div>
     <div id="tabela-checkin-nao" class="mt-4">
-      <h2>Ausentes</h2>
+      <h2>Participantes que não fizeram check-in</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -90,7 +90,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check</th>
+            <th>Check-in</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -106,9 +106,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    // Função para fazer a requisição à URL com o JSON e criar as tabelas
-    $(document).ready(function() {
-      // Extrair o parâmetro 'p' da URL
+    // Função para atualizar os dados da página
+    function atualizarDados() {
       var urlParams = new URLSearchParams(window.location.search);
       var jsonUrl = urlParams.get('p');
 
@@ -144,7 +143,13 @@
       } else {
         alert("Nenhuma URL fornecida.");
       }
-    });
+    }
+
+    // Atualizar os dados a cada 5 segundos
+    setInterval(atualizarDados, 5000);
+
+    // Chamar a função inicialmente para carregar os dados pela primeira vez
+    atualizarDados();
   </script>
 </body>
 </html>

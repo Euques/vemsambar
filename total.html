@@ -24,6 +24,9 @@
     tbody tr:nth-child(even) {
       background-color: #ffffff;
     }
+    .checkin-destacado {
+      background-color: #fff176; /* Cor de destaque */
+    }
   </style>
 </head>
 <body>
@@ -42,6 +45,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
+            <th>Check-in</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -66,7 +70,8 @@
           var primeiraAtracao = Object.values(data)[0].atracao;
           $("#titulo-tabela").text(primeiraAtracao);
           $.each(data, function(_, val) {
-            items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
+            var checkinClass = val.checkin ? 'checkin-destacado' : '';
+            items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
           });
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {

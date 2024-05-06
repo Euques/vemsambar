@@ -38,12 +38,8 @@
 <body>
   <div class="container">
     <h1 id="titulo-tabela" class="mb-4"></h1>
-    <div class="form-group">
-      <label for="urlInput">URL do JSON:</label>
-      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
-    </div>
-    <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
-    <div class="table-responsive mt-4">
+    <div id="tabela-checkin-sim" class="mt-4">
+      <h2>Participantes que fizeram check-in</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -55,11 +51,28 @@
             <th>Preço</th>
           </tr>
         </thead>
-        <tbody id="tabela-dados">
-          <!-- Os dados serão inseridos aqui -->
+        <tbody id="tabela-checkin-sim-dados">
+          <!-- Os dados dos participantes com check-in serão inseridos aqui -->
         </tbody>
       </table>
-      <div id="total-ingressos" class="mt-3"></div>
+    </div>
+    <div id="tabela-checkin-nao" class="mt-4">
+      <h2>Participantes que não fizeram check-in</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Email</th>
+            <th>PIX</th>
+            <th>Check-in</th>
+            <th>Preço</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-checkin-nao-dados">
+          <!-- Os dados dos participantes sem check-in serão inseridos aqui -->
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -68,27 +81,36 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    var jsonUrl = ""; // Variável para armazenar a URL do JSON
-
-    // Função para fazer a requisição à URL com o JSON e criar a tabela
+    // Função para fazer a requisição à URL com o JSON e criar as tabelas
     $(document).ready(function() {
-      $("#buscarDados").click(function() {
-        jsonUrl = $("#urlInput").val(); // Armazenar a URL do JSON na variável
+      // Extrair o parâmetro 'p' da URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var jsonUrl = urlParams.get('p');
+
+      if (jsonUrl) {
         $.getJSON(jsonUrl, function(data) {
-          var items = [];
-          var totalIngressos = Object.keys(data).length;
-          var primeiraAtracao = Object.values(data)[0].atracao;
-          $("#titulo-tabela").text(primeiraAtracao);
+          var checkinSimItems = [];
+          var checkinNaoItems = [];
+
           $.each(data, function(_, val) {
             var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
-            items.push("<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
+            var row = "<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>";
+            if (val.checkin) {
+              checkinSimItems.push(row);
+            } else {
+              checkinNaoItems.push(row);
+            }
           });
-          $("#tabela-dados").html(items.join(""));
-          $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos + "</p>");
+
+          $("#titulo-tabela").text(Object.values(data)[0].atracao);
+          $("#tabela-checkin-sim-dados").html(checkinSimItems.join(""));
+          $("#tabela-checkin-nao-dados").html(checkinNaoItems.join(""));
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");
         });
-      });
+      } else {
+        alert("Nenhuma URL fornecida.");
+      }
     });
   </script>
 </body>

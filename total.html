@@ -11,10 +11,10 @@
   <div class="container">
     <h1>Dados JSON em Tabela HTML</h1>
     <div class="form-group">
-      <label for="urlInput">URL do JSON:</label>
-      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
+      <label for="jsonInput">JSON:</label>
+      <textarea class="form-control" id="jsonInput" rows="5" placeholder="Cole aqui o JSON"></textarea>
     </div>
-    <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
+    <button type="button" class="btn btn-primary" id="gerarTabela">Gerar Tabela</button>
     <table class="table mt-3">
       <thead>
         <tr>
@@ -33,19 +33,16 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    // Função para fazer a requisição à URL com o JSON e criar a tabela
+    // Função para criar a tabela com base no JSON fornecido
     $(document).ready(function() {
-      $("#buscarDados").click(function() {
-        var url = $("#urlInput").val();
-        $.getJSON(url, function(data) {
-          var items = [];
-          $.each(data, function(key, val) {
-            items.push("<tr><td>" + key + "</td><td>" + val + "</td></tr>");
-          });
-          $("#tabela-dados").html(items.join(""));
-        }).fail(function() {
-          alert("Falha ao buscar dados. Verifique a URL fornecida.");
+      $("#gerarTabela").click(function() {
+        var jsonText = $("#jsonInput").val();
+        var jsonData = JSON.parse(jsonText);
+        var items = [];
+        $.each(jsonData, function(key, val) {
+          items.push("<tr><td>" + key + "</td><td>" + JSON.stringify(val) + "</td></tr>");
         });
+        $("#tabela-dados").html(items.join(""));
       });
     });
   </script>

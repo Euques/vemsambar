@@ -83,6 +83,9 @@
         <thead>
           <tr>
             <th>Nome</th>
+            <th>Documento</th>
+            <th>Email</th>
+            <th>PIX</th>
             <th>Preço Médio</th>
           </tr>
         </thead>
@@ -113,7 +116,7 @@
 
           // Calculando as somas e contagens
           $.each(data, function(_, val) {
-            somaPrecos += parseFloat(val.preco);
+            somaPrecos += parseFloat(val.preco) / 100; // Convertendo para R$
             if (val.checkin) {
               totalCheckinSim++;
             } else {
@@ -123,7 +126,7 @@
 
           // Adicionando as somas e contagens nas tabelas
           $("#soma-checkin").html("<tr><td>Check-in Sim</td><td>" + totalCheckinSim.toLocaleString('pt-BR') + "</td></tr><tr><td>Check-in Não</td><td>" + totalCheckinNao.toLocaleString('pt-BR') + "</td></tr>");
-          $("#soma-preco").html("<tr><td>Total Preço</td><td>R$ " + somaPrecos.toLocaleString('pt-BR', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + "</td></tr>");
+          $("#soma-preco").html("<tr><td>Total Preço</td><td>R$ " + somaPrecos.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</td></tr>");
 
           // Calcular o preço médio por nome repetido
           var precoPorNome = {};
@@ -133,13 +136,13 @@
               precoPorNome[val.nome] = 0;
               quantidadePorNome[val.nome] = 0;
             }
-            precoPorNome[val.nome] += parseFloat(val.preco);
+            precoPorNome[val.nome] += parseFloat(val.preco) / 100; // Convertendo para R$
             quantidadePorNome[val.nome]++;
           });
           var itemsPrecoPorNome = [];
           $.each(precoPorNome, function(nome, preco) {
             var precoMedio = preco / quantidadePorNome[nome];
-            itemsPrecoPorNome.push("<tr><td>" + nome + "</td><td>R$ " + precoMedio.toLocaleString('pt-BR', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + "</td></tr>");
+            itemsPrecoPorNome.push("<tr><td>" + nome + "</td><td>" + quantidadePorNome[nome] + "</td><td>" + (precoMedio).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</td></tr>");
           });
           $("#tabela-preco-por-nome").html(itemsPrecoPorNome.join(""));
 
@@ -147,6 +150,10 @@
           $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos.toLocaleString('pt-BR') + "</p>");
 
           // Adicionando os dados na tabela principal
+          $.each(data, function(_, val) {
+            var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
+            items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</td></tr>");
+          });
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");

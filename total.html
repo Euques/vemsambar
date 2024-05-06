@@ -11,15 +11,22 @@
   <div class="container">
     <h1>Dados JSON em Tabela HTML</h1>
     <div class="form-group">
-      <label for="jsonInput">JSON:</label>
-      <textarea class="form-control" id="jsonInput" rows="5" placeholder="Cole aqui o JSON"></textarea>
+      <label for="urlInput">URL do JSON:</label>
+      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
     </div>
-    <button type="button" class="btn btn-primary" id="gerarTabela">Gerar Tabela</button>
+    <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
     <table class="table mt-3">
       <thead>
         <tr>
-          <th>Chave</th>
-          <th>Valor</th>
+          <th>Atração</th>
+          <th>Checkin</th>
+          <th>Descrição</th>
+          <th>Documento</th>
+          <th>Email</th>
+          <th>Nome</th>
+          <th>PIX</th>
+          <th>Preço</th>
+          <th>Produto</th>
         </tr>
       </thead>
       <tbody id="tabela-dados">
@@ -33,16 +40,19 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    // Função para criar a tabela com base no JSON fornecido
+    // Função para fazer a requisição à URL com o JSON e criar a tabela
     $(document).ready(function() {
-      $("#gerarTabela").click(function() {
-        var jsonText = $("#jsonInput").val();
-        var jsonData = JSON.parse(jsonText);
-        var items = [];
-        $.each(jsonData, function(key, val) {
-          items.push("<tr><td>" + key + "</td><td>" + JSON.stringify(val) + "</td></tr>");
+      $("#buscarDados").click(function() {
+        var url = $("#urlInput").val();
+        $.getJSON(url, function(data) {
+          var items = [];
+          $.each(data, function(_, val) {
+            items.push("<tr><td>" + val.atracao + "</td><td>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>" + val.descricao + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.nome + "</td><td>" + val.pix + "</td><td>" + val.preco + "</td><td>" + val.produto + "</td></tr>");
+          });
+          $("#tabela-dados").html(items.join(""));
+        }).fail(function() {
+          alert("Falha ao buscar dados. Verifique a URL fornecida.");
         });
-        $("#tabela-dados").html(items.join(""));
       });
     });
   </script>

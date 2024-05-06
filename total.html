@@ -36,30 +36,30 @@
     .tabela-soma {
       margin-bottom: 20px;
     }
+    .table-rounded {
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1 id="titulo-tabela" class="mb-4"></h1>
-    <div class="form-group">
-      <label for="urlInput">URL do JSON:</label>
-      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
-    </div>
-    <button type="button" class="btn btn-primary" id="buscarDados">Buscar Dados</button>
+    <button type="button" class="btn btn-primary mb-4" id="buscarDados">Buscar Dados</button>
     <div class="table-responsive mt-4">
       <div class="tabela-soma">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-rounded">
           <tbody id="soma-checkin">
             <!-- As somas de check-in serão inseridas aqui -->
           </tbody>
         </table>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-rounded">
           <tbody id="soma-preco">
             <!-- A soma dos preços será inserida aqui -->
           </tbody>
         </table>
       </div>
-      <table class="table table-bordered">
+      <div id="total-ingressos" class="mt-3"></div>
+      <table class="table table-bordered table-rounded mt-4">
         <thead>
           <tr>
             <th>Nome</th>
@@ -75,7 +75,10 @@
           <!-- Os dados serão inseridos aqui -->
         </tbody>
       </table>
-      <div id="total-ingressos" class="mt-3"></div>
+    </div>
+    <div class="form-group mt-4">
+      <label for="urlInput">URL do JSON:</label>
+      <input type="text" class="form-control" id="urlInput" placeholder="Insira a URL do JSON">
     </div>
   </div>
 
@@ -112,8 +115,6 @@
           // Adicionando as somas e contagens nas tabelas
           $("#soma-checkin").html("<tr><td>Check-in Sim</td><td>" + totalCheckinSim.toLocaleString('pt-BR') + "</td></tr><tr><td>Check-in Não</td><td>" + totalCheckinNao.toLocaleString('pt-BR') + "</td></tr>");
           $("#soma-preco").html("<tr><td>Total Preço</td><td>R$ " + somaPrecos.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</td></tr>");
-
-          // Adicionando o total de ingressos
           $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos.toLocaleString('pt-BR') + "</p>");
 
           // Adicionando os dados na tabela principal
@@ -121,6 +122,7 @@
             var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
             items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / (repeticoesPorNome[val.nome] || 1) / 100).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + "</td><td>" + (repeticoesPorNome[val.nome] || 1) + "</td></tr>");
           });
+          items.sort(); // Ordena os itens por nome
           $("#tabela-dados").html(items.join(""));
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");

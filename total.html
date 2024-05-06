@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON para Tabela HTML</title>
+  <title>Vem Sambar Check-in</title>
   <!-- Adicione o Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -49,11 +49,11 @@
         </thead>
         <tbody>
           <tr id="checkin-sim-info">
-            <td>Check-in realizado</td>
+            <td>Presentes</td>
             <td id="checkin-sim-quantidade"></td>
           </tr>
           <tr id="checkin-nao-info">
-            <td>Check-in não realizado</td>
+            <td>Ausentes</td>
             <td id="checkin-nao-quantidade"></td>
           </tr>
           <tr id="total-ingressos-info">
@@ -64,7 +64,7 @@
       </table>
     </div>
     <div id="tabela-checkin-sim" class="mt-4">
-      <h2>Participantes que fizeram check-in</h2>
+      <h2>Presentes</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -72,7 +72,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check-in</th>
+            <th>Check</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -82,7 +82,7 @@
       </table>
     </div>
     <div id="tabela-checkin-nao" class="mt-4">
-      <h2>Participantes que não fizeram check-in</h2>
+      <h2>Ausentes</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -90,7 +90,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check-in</th>
+            <th>Check</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -121,7 +121,7 @@
 
           $.each(data, function(_, val) {
             var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
-            var row = "<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>";
+            var row = "<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>" + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>";
             if (val.checkin) {
               checkinSimItems.push(row);
               totalCheckinSim++;

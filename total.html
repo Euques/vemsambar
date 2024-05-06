@@ -38,6 +38,31 @@
 <body>
   <div class="container">
     <h1 id="titulo-tabela" class="mb-4"></h1>
+    <div id="resultados" class="mt-4">
+      <h2>Resultados</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="checkin-sim-info">
+            <td>Check-in realizado</td>
+            <td id="checkin-sim-quantidade"></td>
+          </tr>
+          <tr id="checkin-nao-info">
+            <td>Check-in não realizado</td>
+            <td id="checkin-nao-quantidade"></td>
+          </tr>
+          <tr id="total-ingressos-info">
+            <td>Total de Ingressos</td>
+            <td id="total-ingressos-quantidade"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div id="tabela-checkin-sim" class="mt-4">
       <h2>Participantes que fizeram check-in</h2>
       <table class="table table-bordered">
@@ -47,7 +72,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check-in</th>
+            <th>Check</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -65,7 +90,7 @@
             <th>Documento</th>
             <th>Email</th>
             <th>PIX</th>
-            <th>Check-in</th>
+            <th>Check</th>
             <th>Preço</th>
           </tr>
         </thead>
@@ -92,11 +117,15 @@
           var checkinSimItems = [];
           var checkinNaoItems = [];
 
+          var totalIngressos = Object.keys(data).length;
+          var totalCheckinSim = 0;
+
           $.each(data, function(_, val) {
             var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
             var row = "<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>";
             if (val.checkin) {
               checkinSimItems.push(row);
+              totalCheckinSim++;
             } else {
               checkinNaoItems.push(row);
             }
@@ -105,6 +134,10 @@
           $("#titulo-tabela").text(Object.values(data)[0].atracao);
           $("#tabela-checkin-sim-dados").html(checkinSimItems.join(""));
           $("#tabela-checkin-nao-dados").html(checkinNaoItems.join(""));
+
+          $("#checkin-sim-quantidade").text(totalCheckinSim);
+          $("#checkin-nao-quantidade").text(totalIngressos - totalCheckinSim);
+          $("#total-ingressos-quantidade").text(totalIngressos);
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");
         });

@@ -24,8 +24,14 @@
     tbody tr:nth-child(even) {
       background-color: #ffffff;
     }
-    .checkin-destacado {
-      background-color: #fff176; /* Cor de destaque */
+    .checkin-destaque-sim {
+      background-color: #d4edda; /* Verde claro */
+    }
+    .checkin-destaque-nao {
+      background-color: #fff3cd; /* Laranja claro */
+    }
+    .total {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -53,6 +59,8 @@
           <!-- Os dados serão inseridos aqui -->
         </tbody>
       </table>
+      <div id="total-ingressos" class="mt-3"></div>
+      <div id="soma-precos"></div>
     </div>
   </div>
 
@@ -67,13 +75,18 @@
         var url = $("#urlInput").val();
         $.getJSON(url, function(data) {
           var items = [];
+          var totalIngressos = Object.keys(data).length;
+          var somaPrecos = 0;
           var primeiraAtracao = Object.values(data)[0].atracao;
           $("#titulo-tabela").text(primeiraAtracao);
           $.each(data, function(_, val) {
-            var checkinClass = val.checkin ? 'checkin-destacado' : '';
-            items.push("<tr><td>" + val.nome + "</td><td>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
+            var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
+            items.push("<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
+            somaPrecos += parseFloat(val.preco) / 100;
           });
           $("#tabela-dados").html(items.join(""));
+          $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos + "</p>");
+          $("#soma-precos").html("<p class='total'>Soma dos Preços: R$ " + somaPrecos.toFixed(2) + "</p>");
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");
         });

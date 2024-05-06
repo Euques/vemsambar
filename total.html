@@ -60,7 +60,6 @@
         </tbody>
       </table>
       <div id="total-ingressos" class="mt-3"></div>
-      <div id="soma-precos"></div>
     </div>
   </div>
 
@@ -69,24 +68,23 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
+    var jsonUrl = ""; // Variável para armazenar a URL do JSON
+
     // Função para fazer a requisição à URL com o JSON e criar a tabela
     $(document).ready(function() {
       $("#buscarDados").click(function() {
-        var url = $("#urlInput").val();
-        $.getJSON(url, function(data) {
+        jsonUrl = $("#urlInput").val(); // Armazenar a URL do JSON na variável
+        $.getJSON(jsonUrl, function(data) {
           var items = [];
           var totalIngressos = Object.keys(data).length;
-          var somaPrecos = 0;
           var primeiraAtracao = Object.values(data)[0].atracao;
           $("#titulo-tabela").text(primeiraAtracao);
           $.each(data, function(_, val) {
             var checkinClass = val.checkin ? 'checkin-destaque-sim' : 'checkin-destaque-nao';
             items.push("<tr><td>" + val.nome + "</td><td style='white-space: nowrap;'>" + val.doc + "</td><td>" + val.email + "</td><td>" + val.pix + "</td><td class='" + checkinClass + "'>" + (val.checkin ? 'Sim' : 'Não') + "</td><td>R$ " + (parseFloat(val.preco) / 100).toFixed(2) + "</td></tr>");
-            somaPrecos += parseFloat(val.preco) / 100;
           });
           $("#tabela-dados").html(items.join(""));
           $("#total-ingressos").html("<p class='total'>Total de Ingressos: " + totalIngressos + "</p>");
-          $("#soma-precos").html("<p class='total'>Soma dos Preços: R$ " + somaPrecos.toFixed(2) + "</p>");
         }).fail(function() {
           alert("Falha ao buscar dados. Verifique a URL fornecida.");
         });
